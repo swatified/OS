@@ -37,7 +37,7 @@ public class PriorityScheduling {
         
         // Priority Scheduling Algorithm (Non-preemptive)
         while (completed < n) {
-            int highestPriority = -1;
+            int hp = -1;
             int minPriority = Integer.MAX_VALUE;
             
             // Step 1: Find highest priority process among all arrived processes
@@ -45,29 +45,29 @@ public class PriorityScheduling {
                 if (!p[i].completed && p[i].at <= currentTime) {
                     if (p[i].priority < minPriority) {
                         minPriority = p[i].priority;
-                        highestPriority = i;
+                        hp = i;
                     }
                     // If same priority, choose first arrival (FCFS for tie-breaking)
-                    else if (p[i].priority == minPriority && p[i].at < p[highestPriority].at) {
-                        highestPriority = i;
+                    else if (p[i].priority == minPriority && p[i].at < p[hp].at) {
+                        hp = i;
                     }
                 }
             }
             
             // Step 2: If no process has arrived yet, move time forward
-            if (highestPriority == -1) {
+            if (hp == -1) {
                 currentTime++;
                 continue;
             }
             
             // Step 3: Execute the highest priority process completely
-            p[highestPriority].ct = currentTime + p[highestPriority].bt;      // completion time
-            p[highestPriority].tat = p[highestPriority].ct - p[highestPriority].at;  // turnaround time
-            p[highestPriority].wt = p[highestPriority].tat - p[highestPriority].bt;  // waiting time
-            p[highestPriority].completed = true;
+            p[hp].ct = currentTime + p[hp].bt;      // completion time
+            p[hp].tat = p[hp].ct - p[hp].at;  // turnaround time
+            p[hp].wt = p[hp].tat - p[hp].bt;  // waiting time
+            p[hp].completed = true;
             
             // Step 4: Update current time and completed count
-            currentTime = p[highestPriority].ct;
+            currentTime = p[hp].ct;
             completed++;
         }
         
